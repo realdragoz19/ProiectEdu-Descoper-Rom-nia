@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DescoperăRomânia-ProiectEdu</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #F7F3EC;
+    --gold: #C5982A;
+    --gold-light: #E8C87A;
+    --forest: #2D4A3E;
+    --forest-light: #4A7A65;
+    --charcoal: #1C1C1C;
+    --muted: #6B6560;
+    --border: rgba(0,0,0,0.1);
+    --red-ro: #CC2233;
+    --blue-ro: #003DA5;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--charcoal);
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    background: rgba(247,243,236,0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 3rem;
+    height: 64px;
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--forest);
+    display: flex; align-items: center; gap: 10px;
+    cursor: pointer;
+  }
+  .flag { display: flex; height: 22px; border-radius: 3px; overflow: hidden; }
+  .flag span { width: 10px; height: 22px; display: block; }
+  .flag .f1 { background: var(--blue-ro); }
+  .flag .f2 { background: var(--gold); }
+  .flag .f3 { background: var(--red-ro); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    text-decoration: none; font-size: 0.85rem; font-weight: 500;
+    color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase;
+    transition: color 0.2s; cursor: pointer;
+  }
+  .nav-links a:hover { color: var(--forest); }
+  .nav-cta {
+    background: var(--forest);
+    color: #fff !important;
+    padding: 0.45rem 1.2rem;
+    border-radius: 999px;
+    font-size: 0.82rem !important;
+    transition: background 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--forest-light) !important; }
+
+  /* PAGE SYSTEM */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* HERO */
+  .hero {
+    padding: 160px 3rem 80px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .hero-label { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.8rem, 5vw, 4.2rem); line-height: 1.1; color: var(--charcoal); margin-bottom: 1.5rem; }
+  .hero h1 em { color: var(--forest); font-style: italic; }
+  .hero p { color: var(--muted); font-size: 1.05rem; line-height: 1.75; max-width: 480px; margin-bottom: 2.5rem; }
+  .hero-actions { display: flex; gap: 1rem; align-items: center; }
+  .btn-primary {
+    background: var(--forest); color: #fff; border: none;
+    padding: 0.85rem 2rem; border-radius: 999px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500;
+    cursor: pointer; transition: background 0.2s, transform 0.15s; text-decoration: none; display: inline-block;
+  }
+  .btn-primary:hover { background: var(--forest-light); transform: translateY(-1px); }
+  .btn-ghost {
+    color: var(--forest); font-size: 0.9rem; font-weight: 500;
+    text-decoration: none; display: flex; align-items: center; gap: 6px;
+    transition: gap 0.2s; cursor: pointer; background: none; border: none; font-family: inherit;
+  }
+  .btn-ghost:hover { gap: 10px; }
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: var(--border);
+    border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin-top: 3rem;
+  }
+  .stat { background: #fff; padding: 1.5rem 1rem; text-align: center; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--forest); display: block; }
+  .stat-lbl { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+  .hero-visual {
+    position: relative;
+    display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; gap: 12px;
+  }
+  .hero-img {
+    border-radius: 16px; overflow: hidden; background: var(--forest-light);
+    aspect-ratio: 3/4; display: flex; align-items: flex-end; padding: 1rem; position: relative;
+  }
+  .hero-img:first-child { grid-row: 1 / 3; border-radius: 24px; }
+  .hero-img svg { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
+  .img-label {
+    position: relative; z-index: 1;
+    background: rgba(255,255,255,0.15); backdrop-filter: blur(6px);
+    color: #fff; font-size: 0.75rem; font-weight: 500;
+    padding: 4px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.3);
+  }
+
+  /* SEARCH + FILTERS */
+  .section-header {
+    max-width: 1200px; margin: 5rem auto 2rem; padding: 0 3rem;
+    display: flex; justify-content: space-between; align-items: flex-end;
+  }
+  .section-header h2 { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--charcoal); }
+  .filters { max-width: 1200px; margin: 0 auto 2.5rem; padding: 0 3rem; display: flex; gap: 0.6rem; flex-wrap: wrap; }
+  .filter-btn {
+    padding: 0.5rem 1.2rem; border-radius: 999px; border: 1.5px solid var(--border);
+    background: #fff; color: var(--muted);
+    font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 500;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .filter-btn:hover, .filter-btn.active { border-color: var(--forest); background: var(--forest); color: #fff; }
+
+  /* CARDS GRID */
+  .grid {
+    max-width: 1200px; margin: 0 auto; padding: 0 3rem 6rem;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;
+  }
+  .card {
+    background: #fff; border-radius: 20px; overflow: hidden;
+    border: 1px solid var(--border); transition: transform 0.25s, box-shadow 0.25s; cursor: pointer;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.1); }
+  .card-img {
+    height: 200px; position: relative; overflow: hidden; isolation: isolate;
+    background-color: var(--forest-light);
+    background-image:
+      linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.22) 100%),
+      var(--photo, linear-gradient(160deg, #4A7A65 0%, #2D4A3E 100%));
+    background-position: center, var(--photo-pos, center);
+    background-size: cover, cover;
+  }
+  .card-img::after {
+    content: "";
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(180deg, rgba(0,0,0,0.05) 45%, rgba(0,0,0,0.34) 100%);
+  }
+  .card-img svg { display: none; }
+  .card-badge {
+    position: absolute; top: 12px; left: 12px;
+    background: rgba(255,255,255,0.9); backdrop-filter: blur(4px);
+    font-size: 0.7rem; font-weight: 500; color: var(--charcoal);
+    padding: 4px 10px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.06em;
+    z-index: 2;
+  }
+  .card-fav {
+    position: absolute; top: 12px; right: 12px;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(255,255,255,0.9);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; cursor: pointer; transition: transform 0.2s; z-index: 3;
+  }
+  .card-fav:hover { transform: scale(1.2); }
+  .card-body { padding: 1.25rem; }
+  .card-region { font-size: 0.72rem; color: var(--gold); font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+  .card-title { font-family: 'Playfair Display', serif; font-size: 1.15rem; margin-bottom: 0.5rem; }
+  .card-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.6; margin-bottom: 1rem; }
+  .card-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid var(--border); }
+  .card-meta { display: flex; gap: 1rem; }
+  .card-meta span { font-size: 0.78rem; color: var(--muted); display: flex; align-items: center; gap: 4px; }
+  .card-link {
+    font-size: 0.82rem; font-weight: 500; color: var(--forest);
+    text-decoration: none; display: flex; align-items: center; gap: 4px; transition: gap 0.2s;
+    background: none; border: none; cursor: pointer; font-family: inherit;
+  }
+  .card-link:hover { gap: 8px; }
+
+  /* SEARCH BAR */
+  .search-wrap { max-width: 1200px; margin: 0 auto; padding: 0 3rem 2rem; }
+  .search-box {
+    display: flex; align-items: center; gap: 12px;
+    background: #fff; border: 1.5px solid var(--border);
+    border-radius: 999px; padding: 0.6rem 1.5rem; transition: border-color 0.2s;
+  }
+  .search-box:focus-within { border-color: var(--forest); }
+  .search-box input {
+    border: none; outline: none; font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem; color: var(--charcoal); background: transparent; width: 100%;
+  }
+  .search-box input::placeholder { color: var(--muted); }
+
+  /* FOOTER */
+  footer { background: var(--forest); color: rgba(255,255,255,0.7); text-align: center; padding: 2.5rem; font-size: 0.82rem; }
+  footer strong { color: #fff; }
+
+  /* COLOUR CLASSES */
+  .hero-img,
+  .detail-hero {
+    background-color: var(--photo-color, var(--forest-light));
+    background-image:
+      linear-gradient(180deg, rgba(0,0,0,0.04) 0%, rgba(0,0,0,0.28) 100%),
+      var(--photo, linear-gradient(160deg, #4A7A65 0%, #2D4A3E 100%));
+    background-position: center, var(--photo-pos, center);
+    background-size: cover, cover;
+  }
+
+  .il-peles { --photo-color: #2D4A3E; --photo-pos: center 44%; --photo: url("https://commons.wikimedia.org/wiki/Special:FilePath/Peles_Castle%2C_Sinaia_%28Romania%29.jpg?width=900"); }
+  .il-bran { --photo-color: #2E2D2A; --photo-pos: center 42%; --photo: url("https://commons.wikimedia.org/wiki/Special:FilePath/Bran_Castle_%2824341084365%29.jpg?width=900"); }
+  .il-danube { --photo-color: #1A5276; --photo-pos: center 50%; --photo: url("https://commons.wikimedia.org/wiki/Special:FilePath/White_pelicans_%28Pelecanus_onocrotalus%29_Danube_delta.jpg?width=900"); }
+  .il-painted { --photo-color: #341F97; --photo-pos: center 48%; --photo: url("https://commons.wikimedia.org/wiki/Special:FilePath/Voronet_Monastery.JPG?width=900"); }
+  .il-transfag { --photo-color: #145A32; --photo-pos: center 42%; --photo: url("https://commons.wikimedia.org/wiki/Special:FilePath/Romania_Transfagarasan.jpg?width=900"); }
+  .il-sighisoara { --photo-color: #784212; --photo-pos: center 48%; --photo: url("https://commons.wikimedia.org/wiki/Special:FilePath/Piata_sighisoara.jpg?width=900"); }
+  .il-sibiu { --photo-color: #641E16; --photo-pos: center 50%; --photo: url("https://commons.wikimedia.org/wiki/Special:FilePath/Large_Square_Sibiu-Romania.jpg?width=900"); }
+  .il-maramures { --photo-color: #4A235A; --photo-pos: center 42%; --photo: url("https://commons.wikimedia.org/wiki/Special:FilePath/Barsana_Wooden_Church.jpg?width=900"); }
+  .il-retezat { --photo-color: #0E6655; --photo-pos: center 46%; --photo: url("https://commons.wikimedia.org/wiki/Special:FilePath/Retezat.jpg?width=900"); }
+  .il-costinesti { --photo-color: #7D6608; --photo-pos: center 52%; --photo: url("https://commons.wikimedia.org/wiki/Special:FilePath/Mamaia_%28Constanta%2C_Romania%29.jpg?width=900"); }
+  .il-tulcea { --photo-color: #154360; --photo-pos: center 50%; --photo: url("https://commons.wikimedia.org/wiki/Special:FilePath/Tulcea_Danube.jpg?width=900"); }
+  .il-cluj { --photo-color: #922B21; --photo-pos: center 48%; --photo: url("https://commons.wikimedia.org/wiki/Special:FilePath/Cluj_Napoca.jpg?width=900"); }
+
+  .hidden { display: none !important; }
+
+  /* ===================== DETAIL PAGE ===================== */
+  #page-detail { animation: fadeIn 0.35s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+  .detail-hero {
+    height: 480px; position: relative; overflow: hidden;
+    display: flex; align-items: flex-end;
+  }
+  .detail-hero svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+  .detail-hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 60%);
+  }
+  .detail-hero-content {
+    position: relative; z-index: 1;
+    padding: 2.5rem 3rem; color: #fff; width: 100%;
+  }
+  .detail-badge {
+    display: inline-block; background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,0.3);
+    font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em;
+    padding: 5px 14px; border-radius: 999px; margin-bottom: 0.8rem;
+  }
+  .detail-hero-content h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 700;
+    line-height: 1.1; margin-bottom: 0.5rem;
+  }
+  .detail-region { opacity: 0.8; font-size: 0.9rem; }
+
+  .detail-body {
+    max-width: 900px; margin: 0 auto; padding: 3rem 3rem 6rem;
+  }
+  .detail-meta-row {
+    display: flex; gap: 2rem; flex-wrap: wrap;
+    margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border);
+  }
+  .detail-meta-item { display: flex; flex-direction: column; gap: 4px; }
+  .detail-meta-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+  .detail-meta-value { font-size: 1rem; font-weight: 500; color: var(--charcoal); }
+
+  .detail-section { margin-bottom: 2.5rem; }
+  .detail-section h2 {
+    font-family: 'Playfair Display', serif; font-size: 1.4rem;
+    color: var(--charcoal); margin-bottom: 1rem; padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--gold-light);
+  }
+  .detail-section p { color: var(--muted); line-height: 1.8; font-size: 0.95rem; margin-bottom: 1rem; }
+
+  .detail-highlights {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem;
+    margin-top: 1rem;
+  }
+  .highlight-card {
+    background: #fff; border: 1px solid var(--border); border-radius: 14px;
+    padding: 1.2rem; display: flex; flex-direction: column; gap: 8px;
+  }
+  .highlight-card .hl-icon { font-size: 1.5rem; }
+  .highlight-card .hl-title { font-weight: 500; font-size: 0.9rem; color: var(--charcoal); }
+  .highlight-card .hl-text { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
+
+  .detail-tips {
+    background: var(--forest); color: #fff;
+    border-radius: 16px; padding: 1.8rem;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem;
+  }
+  .tip-item { display: flex; flex-direction: column; gap: 4px; }
+  .tip-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.65; }
+  .tip-value { font-size: 0.9rem; font-weight: 500; }
+
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    margin: 80px 3rem 0;
+    background: none; border: 1.5px solid var(--border);
+    padding: 0.55rem 1.2rem; border-radius: 999px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 500;
+    color: var(--forest); cursor: pointer; transition: all 0.2s;
+  }
+  .back-btn:hover { background: var(--forest); color: #fff; border-color: var(--forest); }
+
+  /* ===================== MAP PAGE ===================== */
+  #page-map { animation: none; }
+
+  .map-header {
+    max-width: 1200px; margin: 0 auto; padding: 100px 3rem 2rem;
+    display: flex; justify-content: space-between; align-items: flex-end;
+  }
+  .map-header h2 { font-family: 'Playfair Display', serif; font-size: 2rem; }
+  .map-header p { color: var(--muted); font-size: 0.9rem; margin-top: 0.4rem; }
+
+  .map-container {
+    max-width: 1200px; margin: 0 auto; padding: 0 3rem 6rem;
+    display: grid; grid-template-columns: 1fr 350px; gap: 2rem; align-items: start;
+  }
+
+  .map-svg-wrap {
+    background: #fff; border: 1px solid var(--border); border-radius: 20px;
+    overflow: hidden; position: relative;
+  }
+  .map-svg-wrap svg { width: 100%; height: auto; display: block; }
+
+  .map-pin {
+    cursor: pointer;
+    pointer-events: visiblePainted;
+  }
+  .map-pin text { pointer-events: none; }
+  .map-pin circle {
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    transition: opacity 0.2s, stroke-width 0.2s;
+  }
+  .map-pin:hover circle:first-of-type { opacity: 0.35; }
+  .map-pin:hover circle:nth-of-type(2) { stroke: #fff; stroke-width: 2; }
+
+  .map-sidebar {
+    position: sticky; top: 80px;
+  }
+  .map-legend {
+    background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem;
+    margin-bottom: 1.2rem;
+  }
+  .map-legend h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-bottom: 1rem; }
+  .legend-item { display: flex; align-items: center; gap: 10px; padding: 6px 0; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+  .legend-dot.castele { background: #27ae60; }
+  .legend-dot.natura { background: #2980b9; }
+  .legend-dot.oras { background: #e74c3c; }
+  .legend-dot.manastire { background: #8e44ad; }
+  .legend-dot.litoral { background: #f39c12; }
+  .legend-dot.delta { background: #3498db; }
+  .legend-label { font-size: 0.82rem; color: var(--muted); }
+
+  .map-info-card {
+    background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem;
+    transition: all 0.25s;
+  }
+  .map-info-card.empty { opacity: 0.5; }
+  .map-info-card .mic-badge {
+    display: inline-block;
+    font-size: 0.7rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em;
+    padding: 3px 10px; border-radius: 999px; background: var(--cream); color: var(--muted);
+    margin-bottom: 0.7rem;
+  }
+  .map-info-card h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: 0.4rem; }
+  .map-info-card .mic-region { font-size: 0.78rem; color: var(--gold); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.7rem; }
+  .map-info-card p { font-size: 0.83rem; color: var(--muted); line-height: 1.6; margin-bottom: 1rem; }
+  .map-info-card .mic-meta { display: flex; gap: 1rem; margin-bottom: 1rem; }
+  .map-info-card .mic-meta span { font-size: 0.78rem; color: var(--muted); }
+  .map-goto {
+    width: 100%; padding: 0.65rem; background: var(--forest); color: #fff;
+    border: none; border-radius: 999px; font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: background 0.2s;
+  }
+  .map-goto:hover { background: var(--forest-light); }
+  .mic-placeholder { font-size: 0.85rem; color: var(--muted); text-align: center; padding: 1rem 0; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">
+    <div class="flag"><span class="f1"></span><span class="f2"></span><span class="f3"></span></div>
+    Descoperă România
+  </div>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home'); scrollToLocuri()">Locuri</a></li>
+    <li><a onclick="showPage('map')">Hartă</a></li>
+    <li><a onclick="showPage('home')" class="nav-cta">Planifică</a></li>
+  </ul>
+</nav>
+
+<!-- ==================== HOME PAGE ==================== -->
+<div id="page-home" class="page active">
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <p class="hero-label">🇷🇴 Ghid de călătorie</p>
+    <h1>Descoperă <em>frumusețea</em> României!</h1>
+    <p>De la castele medievale și mănăstiri pictate, la peisaje alpine și Delta Dunării — România te așteaptă cu mii de povești.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="scrollToLocuri()">Explorează locurile</button>
+      <button class="btn-ghost" onclick="showPage('map')">Harta interactivă →</button>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num">41</span><span class="stat-lbl">Județe</span></div>
+      <div class="stat"><span class="stat-num">7</span><span class="stat-lbl">Situri UNESCO</span></div>
+      <div class="stat"><span class="stat-num">500+</span><span class="stat-lbl">Obiective</span></div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-img il-peles" style="grid-row:1/3;">
+      <svg viewBox="0 0 260 380" xmlns="http://www.w3.org/2000/svg">
+        <rect x="60" y="220" width="140" height="120" fill="rgba(255,255,255,0.12)" rx="4"/>
+        <rect x="85" y="195" width="90" height="30" fill="rgba(255,255,255,0.15)" rx="2"/>
+        <rect x="110" y="175" width="40" height="25" fill="rgba(255,255,255,0.15)" rx="2"/>
+        <polygon points="130,145 115,175 145,175" fill="rgba(255,255,255,0.25)"/>
+        <rect x="75" y="200" width="20" height="40" fill="rgba(255,255,255,0.1)" rx="2"/>
+        <polygon points="85,190 75,200 95,200" fill="rgba(255,255,255,0.2)"/>
+        <rect x="165" y="200" width="20" height="40" fill="rgba(255,255,255,0.1)" rx="2"/>
+        <polygon points="175,190 165,200 185,200" fill="rgba(255,255,255,0.2)"/>
+        <rect x="110" y="235" width="18" height="22" fill="rgba(255,255,255,0.18)" rx="2"/>
+        <rect x="135" y="235" width="18" height="22" fill="rgba(255,255,255,0.18)" rx="2"/>
+        <rect x="93" y="240" width="10" height="14" fill="rgba(255,255,255,0.12)" rx="1"/>
+        <rect x="157" y="240" width="10" height="14" fill="rgba(255,255,255,0.12)" rx="1"/>
+        <polygon points="0,260 80,180 160,260" fill="rgba(0,0,0,0.15)"/>
+        <polygon points="100,260 200,170 260,220 260,260" fill="rgba(0,0,0,0.12)"/>
+        <rect x="30" y="290" width="6" height="30" fill="rgba(0,0,0,0.2)"/>
+        <polygon points="33,270 20,295 46,295" fill="rgba(0,0,0,0.2)"/>
+        <rect x="210" y="285" width="6" height="35" fill="rgba(0,0,0,0.2)"/>
+        <polygon points="213,265 200,290 226,290" fill="rgba(0,0,0,0.2)"/>
+      </svg>
+      <span class="img-label">Castelul Peleș</span>
+    </div>
+    <div class="hero-img il-danube" style="aspect-ratio:4/3;">
+      <svg viewBox="0 0 180 140" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="90" cy="100" rx="90" ry="60" fill="rgba(255,255,255,0.1)"/>
+        <path d="M0,90 Q45,70 90,85 T180,80 L180,140 L0,140Z" fill="rgba(255,255,255,0.15)"/>
+        <path d="M0,105 Q45,88 90,98 T180,95 L180,140 L0,140Z" fill="rgba(255,255,255,0.12)"/>
+        <ellipse cx="55" cy="75" rx="25" ry="12" fill="rgba(255,255,255,0.12)"/>
+        <ellipse cx="130" cy="82" rx="18" ry="8" fill="rgba(255,255,255,0.1)"/>
+      </svg>
+      <span class="img-label">Delta Dunării</span>
+    </div>
+    <div class="hero-img il-sighisoara" style="aspect-ratio:4/3;">
+      <svg viewBox="0 0 180 140" xmlns="http://www.w3.org/2000/svg">
+        <rect x="60" y="50" width="60" height="80" fill="rgba(255,255,255,0.12)" rx="3"/>
+        <polygon points="90,20 60,50 120,50" fill="rgba(255,255,255,0.22)"/>
+        <rect x="78" y="90" width="24" height="40" fill="rgba(255,255,255,0.1)"/>
+        <rect x="68" y="60" width="16" height="16" fill="rgba(255,255,255,0.18)" rx="1"/>
+        <rect x="96" y="60" width="16" height="16" fill="rgba(255,255,255,0.18)" rx="1"/>
+        <rect x="30" y="80" width="30" height="50" fill="rgba(255,255,255,0.08)" rx="2"/>
+        <rect x="140" y="70" width="30" height="60" fill="rgba(255,255,255,0.08)" rx="2"/>
+      </svg>
+      <span class="img-label">Sighișoara</span>
+    </div>
+  </div>
+</section>
+
+<!-- SEARCH + FILTERS -->
+<div id="locuri">
+<div class="search-wrap">
+  <div class="search-box">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6560" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="text" placeholder="Caută un loc, oraș sau regiune..." id="searchInput" oninput="filterCards()">
+  </div>
+</div>
+<div class="section-header">
+  <h2>Locuri de vizitat</h2>
+  <span style="color:var(--muted);font-size:0.85rem;" id="count-label">12 obiective</span>
+</div>
+<div class="filters">
+  <button class="filter-btn active" onclick="filterBy('toate', this)">Toate</button>
+  <button class="filter-btn" onclick="filterBy('castele', this)">🏰 Castele</button>
+  <button class="filter-btn" onclick="filterBy('natura', this)">🌿 Natură</button>
+  <button class="filter-btn" onclick="filterBy('oras', this)">🏙 Orașe</button>
+  <button class="filter-btn" onclick="filterBy('manastire', this)">⛪ Mănăstiri</button>
+  <button class="filter-btn" onclick="filterBy('litoral', this)">🌊 Litoral</button>
+  <button class="filter-btn" onclick="filterBy('delta', this)">🦅 Delta</button>
+</div>
+
+<div class="grid" id="cardsGrid">
+
+  <!-- CASTELUL PELES -->
+  <div class="card" data-id="peles" data-cat="castele" data-name="castelul peles sinaia prahova">
+    <div class="card-img il-peles">
+      <span class="card-badge">Castele</span>
+      <span class="card-fav">♡</span>
+      <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+        <rect x="80" y="100" width="140" height="90" fill="rgba(255,255,255,0.1)" rx="3"/>
+        <rect x="100" y="85" width="100" height="20" fill="rgba(255,255,255,0.13)"/>
+        <rect x="120" y="70" width="60" height="20" fill="rgba(255,255,255,0.13)"/>
+        <polygon points="150,45 125,70 175,70" fill="rgba(255,255,255,0.22)"/>
+        <rect x="88" y="92" width="18" height="30" fill="rgba(255,255,255,0.1)" rx="2"/>
+        <polygon points="97,85 88,92 106,92" fill="rgba(255,255,255,0.18)"/>
+        <rect x="194" y="92" width="18" height="30" fill="rgba(255,255,255,0.1)" rx="2"/>
+        <polygon points="203,85 194,92 212,92" fill="rgba(255,255,255,0.18)"/>
+        <rect x="130" y="120" width="20" height="26" fill="rgba(255,255,255,0.15)" rx="2"/>
+        <rect x="155" y="120" width="20" height="26" fill="rgba(255,255,255,0.15)" rx="2"/>
+        <polygon points="0,170 90,100 180,170" fill="rgba(0,0,0,0.12)"/>
+        <polygon points="120,170 240,90 300,130 300,170" fill="rgba(0,0,0,0.1)"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <p class="card-region">📍 Sinaia, Prahova</p>
+      <h3 class="card-title">Castelul Peleș</h3>
+      <p class="card-desc">Reședința regală din inima Carpaților, considerată una dintre cele mai frumoase castele din Europa.</p>
+      <div class="card-footer">
+        <div class="card-meta">
+          <span>⭐ 4.9</span>
+          <span>🕐 2-3 ore</span>
+        </div>
+        <button class="card-link" onclick="showDetail('peles')">Detalii →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASTELUL BRAN -->
+  <div class="card" data-id="bran" data-cat="castele" data-name="castelul bran dracula brasov">
+    <div class="card-img il-bran">
+      <span class="card-badge">Castele</span>
+      <span class="card-fav">♡</span>
+      <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+        <rect x="100" y="90" width="100" height="100" fill="rgba(255,255,255,0.08)" rx="2"/>
+        <rect x="130" y="70" width="40" height="25" fill="rgba(255,255,255,0.1)"/>
+        <rect x="148" y="50" width="16" height="25" fill="rgba(255,255,255,0.12)"/>
+        <polygon points="156,35 148,50 164,50" fill="rgba(255,255,255,0.2)"/>
+        <rect x="103" y="95" width="15" height="20" fill="rgba(255,255,255,0.08)" rx="1"/>
+        <polygon points="110.5,85 103,95 118,95" fill="rgba(255,255,255,0.15)"/>
+        <rect x="182" y="95" width="15" height="20" fill="rgba(255,255,255,0.08)" rx="1"/>
+        <polygon points="189.5,85 182,95 197,95" fill="rgba(255,255,255,0.15)"/>
+        <rect x="140" y="135" width="20" height="55" fill="rgba(255,255,255,0.08)"/>
+        <rect x="113" y="110" width="14" height="18" fill="rgba(255,255,255,0.12)" rx="1"/>
+        <rect x="173" y="110" width="14" height="18" fill="rgba(255,255,255,0.12)" rx="1"/>
+        <circle cx="80" cy="70" r="5" fill="rgba(255,255,255,0.25)"/>
+        <circle cx="220" cy="60" r="4" fill="rgba(255,255,255,0.2)"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <p class="card-region">📍 Bran, Brașov</p>
+      <h3 class="card-title">Castelul Bran</h3>
+      <p class="card-desc">Legendarul castel al lui Dracula, simbol al Transilvaniei și una dintre cele mai vizitate atracții din România.</p>
+      <div class="card-footer">
+        <div class="card-meta">
+          <span>⭐ 4.7</span>
+          <span>🕐 1-2 ore</span>
+        </div>
+        <button class="card-link" onclick="showDetail('bran')">Detalii →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DELTA DUNARII -->
+  <div class="card" data-id="delta" data-cat="delta" data-name="delta dunarii tulcea natura">
+    <div class="card-img il-danube">
+      <span class="card-badge">Delta</span>
+      <span class="card-fav">♡</span>
+      <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,120 Q75,90 150,110 T300,100 L300,200 L0,200Z" fill="rgba(255,255,255,0.15)"/>
+        <path d="M0,140 Q75,115 150,130 T300,120 L300,200 L0,200Z" fill="rgba(255,255,255,0.12)"/>
+        <ellipse cx="80" cy="95" rx="40" ry="18" fill="rgba(255,255,255,0.1)"/>
+        <ellipse cx="220" cy="105" rx="30" ry="14" fill="rgba(255,255,255,0.1)"/>
+        <path d="M60,100 L65,85 L70,100" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" fill="none"/>
+        <path d="M90,90 L97,75 L104,90" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" fill="none"/>
+        <circle cx="65" cy="83" r="8" fill="rgba(255,255,255,0.15)"/>
+        <circle cx="97" cy="73" r="6" fill="rgba(255,255,255,0.15)"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <p class="card-region">📍 Tulcea</p>
+      <h3 class="card-title">Delta Dunării</h3>
+      <p class="card-desc">A doua deltă ca mărime din Europa și rezervație a biosferei UNESCO, cu peste 300 de specii de păsări.</p>
+      <div class="card-footer">
+        <div class="card-meta">
+          <span>⭐ 4.9</span>
+          <span>🕐 2-5 zile</span>
+        </div>
+        <button class="card-link" onclick="showDetail('delta')">Detalii →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MANASTIRI BUCOVINA -->
+  <div class="card" data-id="manastiri" data-cat="manastire" data-name="manastiri bucovina voronet pictate suceava">
+    <div class="card-img il-painted">
+      <span class="card-badge">Mănăstiri</span>
+      <span class="card-fav">♡</span>
+      <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+        <rect x="90" y="100" width="120" height="90" fill="rgba(255,255,255,0.1)" rx="2"/>
+        <polygon points="150,60 90,100 210,100" fill="rgba(255,255,255,0.18)"/>
+        <rect x="140" y="50" width="20" height="15" fill="rgba(255,255,255,0.2)"/>
+        <line x1="150" y1="40" x2="150" y2="55" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+        <line x1="144" y1="46" x2="156" y2="46" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+        <rect x="135" y="130" width="30" height="60" fill="rgba(255,255,255,0.08)"/>
+        <rect x="100" y="120" width="20" height="24" fill="rgba(255,255,255,0.15)" rx="10 10 0 0"/>
+        <rect x="180" y="120" width="20" height="24" fill="rgba(255,255,255,0.15)" rx="10 10 0 0"/>
+        <rect x="60" y="130" width="30" height="60" fill="rgba(255,255,255,0.07)" rx="2"/>
+        <rect x="210" y="130" width="30" height="60" fill="rgba(255,255,255,0.07)" rx="2"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <p class="card-region">📍 Bucovina, Suceava</p>
+      <h3 class="card-title">Mănăstirile Pictate</h3>
+      <p class="card-desc">Capodopere medievale cu fresce exterioare unice în lume — Voroneț, Sucevița, Moldovița, incluse în patrimoniul UNESCO.</p>
+      <div class="card-footer">
+        <div class="card-meta">
+          <span>⭐ 4.8</span>
+          <span>🕐 1-2 zile</span>
+        </div>
+        <button class="card-link" onclick="showDetail('manastiri')">Detalii →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRANSFAGARASAN -->
+  <div class="card" data-id="transfag" data-cat="natura" data-name="transfagarasan drumul alpineilor carpati fagaras">
+    <div class="card-img il-transfag">
+      <span class="card-badge">Natură</span>
+      <span class="card-fav">♡</span>
+      <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="150,30 50,170 250,170" fill="rgba(0,0,0,0.15)"/>
+        <polygon points="80,80 20,170 140,170" fill="rgba(0,0,0,0.1)"/>
+        <polygon points="220,60 160,170 280,170" fill="rgba(0,0,0,0.1)"/>
+        <path d="M150,40 Q170,90 160,110 Q145,130 155,150 Q165,165 150,170" stroke="rgba(255,255,255,0.5)" stroke-width="3" fill="none"/>
+        <circle cx="152" cy="85" r="4" fill="rgba(255,255,255,0.6)"/>
+        <circle cx="157" cy="115" r="3" fill="rgba(255,255,255,0.5)"/>
+        <ellipse cx="150" cy="15" rx="20" ry="8" fill="rgba(255,255,255,0.25)"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <p class="card-region">📍 Munții Făgăraș</p>
+      <h3 class="card-title">Transfăgărășanul</h3>
+      <p class="card-desc">Cel mai spectaculos drum din România, care traversează crestele Carpaților la 2.042 m altitudine.</p>
+      <div class="card-footer">
+        <div class="card-meta">
+          <span>⭐ 4.9</span>
+          <span>🕐 4-6 ore</span>
+        </div>
+        <button class="card-link" onclick="showDetail('transfag')">Detalii →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIGHISOARA -->
+  <div class="card" data-id="sighisoara" data-cat="oras" data-name="sighisoara cetate medievala mures transilvania">
+    <div class="card-img il-sighisoara">
+      <span class="card-badge">Orașe</span>
+      <span class="card-fav">♡</span>
+      <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+        <rect x="110" y="80" width="80" height="110" fill="rgba(255,255,255,0.1)" rx="2"/>
+        <polygon points="150,45 110,80 190,80" fill="rgba(255,255,255,0.2)"/>
+        <rect x="143" y="60" width="14" height="24" fill="rgba(255,255,255,0.15)"/>
+        <rect x="120" y="100" width="22" height="22" fill="rgba(255,255,255,0.15)" rx="2"/>
+        <rect x="158" y="100" width="22" height="22" fill="rgba(255,255,255,0.15)" rx="2"/>
+        <rect x="138" y="145" width="24" height="45" fill="rgba(255,255,255,0.08)"/>
+        <rect x="60" y="110" width="45" height="80" fill="rgba(255,255,255,0.07)" rx="2"/>
+        <rect x="195" y="100" width="45" height="90" fill="rgba(255,255,255,0.07)" rx="2"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <p class="card-region">📍 Sighișoara, Mureș</p>
+      <h3 class="card-title">Cetatea Sighișoara</h3>
+      <p class="card-desc">Singura cetate medievală locuită din Europa, orașul natal al lui Vlad Țepeș. Patrimoniu UNESCO din 1999.</p>
+      <div class="card-footer">
+        <div class="card-meta">
+          <span>⭐ 4.8</span>
+          <span>🕐 3-4 ore</span>
+        </div>
+        <button class="card-link" onclick="showDetail('sighisoara')">Detalii →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIBIU -->
+  <div class="card" data-id="sibiu" data-cat="oras" data-name="sibiu hermannstadt centru istoric translivania">
+    <div class="card-img il-sibiu">
+      <span class="card-badge">Orașe</span>
+      <span class="card-fav">♡</span>
+      <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+        <rect x="50" y="100" width="200" height="100" fill="rgba(0,0,0,0.1)"/>
+        <rect x="60" y="85" width="50" height="115" fill="rgba(255,255,255,0.08)" rx="2"/>
+        <polygon points="85,65 60,85 110,85" fill="rgba(255,255,255,0.18)"/>
+        <rect x="120" y="105" width="60" height="95" fill="rgba(255,255,255,0.08)" rx="2"/>
+        <polygon points="150,80 120,105 180,105" fill="rgba(255,255,255,0.15)"/>
+        <rect x="190" y="90" width="55" height="110" fill="rgba(255,255,255,0.07)" rx="2"/>
+        <polygon points="217,70 190,90 244,90" fill="rgba(255,255,255,0.13)"/>
+        <rect x="75" y="100" width="10" height="20" fill="rgba(255,255,255,0.15)" rx="5 5 0 0"/>
+        <rect x="135" y="115" width="12" height="22" fill="rgba(255,255,255,0.15)" rx="6 6 0 0"/>
+        <rect x="162" y="115" width="12" height="22" fill="rgba(255,255,255,0.15)" rx="6 6 0 0"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <p class="card-region">📍 Sibiu</p>
+      <h3 class="card-title">Sibiu</h3>
+      <p class="card-desc">Capitală Culturală Europeană în 2007, cu un centru historic bine conservat și arhitectură saxonă fascinantă.</p>
+      <div class="card-footer">
+        <div class="card-meta">
+          <span>⭐ 4.8</span>
+          <span>🕐 1-2 zile</span>
+        </div>
+        <button class="card-link" onclick="showDetail('sibiu')">Detalii →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MARAMURES -->
+  <div class="card" data-id="maramures" data-cat="natura" data-name="maramures cimitirul vesel sapanta biserici lemn">
+    <div class="card-img il-maramures">
+      <span class="card-badge">Natură & Tradiții</span>
+      <span class="card-fav">♡</span>
+      <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+        <rect x="125" y="100" width="50" height="90" fill="rgba(255,255,255,0.1)" rx="2"/>
+        <polygon points="150,60 125,100 175,100" fill="rgba(255,255,255,0.2)"/>
+        <rect x="143" y="48" width="14" height="18" fill="rgba(255,255,255,0.15)"/>
+        <polygon points="150,38 143,48 157,48" fill="rgba(255,255,255,0.25)"/>
+        <rect x="60" y="120" width="35" height="70" fill="rgba(255,255,255,0.07)" rx="2"/>
+        <polygon points="77,100 60,120 94,120" fill="rgba(255,255,255,0.12)"/>
+        <rect x="205" y="120" width="35" height="70" fill="rgba(255,255,255,0.07)" rx="2"/>
+        <polygon points="222,100 205,120 239,120" fill="rgba(255,255,255,0.12)"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <p class="card-region">📍 Maramureș</p>
+      <h3 class="card-title">Maramureș</h3>
+      <p class="card-desc">Inima satului românesc tradițional, cu biserici de lemn UNESCO, Cimitirul Vesel de la Săpânța și peisaje rurale autentice.</p>
+      <div class="card-footer">
+        <div class="card-meta">
+          <span>⭐ 4.7</span>
+          <span>🕐 2-3 zile</span>
+        </div>
+        <button class="card-link" onclick="showDetail('maramures')">Detalii →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RETEZAT -->
+  <div class="card" data-id="retezat" data-cat="natura" data-name="retezat parc national hunedoara munti alpin">
+    <div class="card-img il-retezat">
+      <span class="card-badge">Natură</span>
+      <span class="card-fav">♡</span>
+      <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="150,20 40,170 260,170" fill="rgba(0,0,0,0.18)"/>
+        <polygon points="70,80 0,170 140,170" fill="rgba(0,0,0,0.12)"/>
+        <polygon points="230,60 160,170 300,170" fill="rgba(0,0,0,0.12)"/>
+        <ellipse cx="150" cy="95" rx="30" ry="12" fill="rgba(255,255,255,0.25)"/>
+        <ellipse cx="145" cy="150" rx="22" ry="8" fill="rgba(255,255,255,0.2)"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <p class="card-region">📍 Hunedoara</p>
+      <h3 class="card-title">Parcul Național Retezat</h3>
+      <p class="card-desc">Cel mai vechi parc național din România cu 80 de lacuri glaciare, vulturi și o biodiversitate excepțională.</p>
+      <div class="card-footer">
+        <div class="card-meta">
+          <span>⭐ 4.9</span>
+          <span>🕐 2-5 zile</span>
+        </div>
+        <button class="card-link" onclick="showDetail('retezat')">Detalii →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LITORAL -->
+  <div class="card" data-id="litoral" data-cat="litoral" data-name="mamaia constanta mare litoral plaja vara">
+    <div class="card-img il-costinesti">
+      <span class="card-badge">Litoral</span>
+      <span class="card-fav">♡</span>
+      <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,130 Q75,110 150,125 T300,115 L300,200 L0,200Z" fill="rgba(255,255,255,0.15)"/>
+        <path d="M0,145 Q75,128 150,140 T300,130 L300,200 L0,200Z" fill="rgba(255,255,255,0.12)"/>
+        <circle cx="230" cy="50" r="35" fill="rgba(255,255,255,0.2)"/>
+        <circle cx="230" cy="50" r="28" fill="rgba(255,255,255,0.15)"/>
+        <path d="M60,125 L65,108 L70,125" stroke="rgba(255,255,255,0.4)" stroke-width="2" fill="none"/>
+        <ellipse cx="65" cy="106" rx="9" ry="4" fill="rgba(255,255,255,0.2)"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <p class="card-region">📍 Constanța, Marea Neagră</p>
+      <h3 class="card-title">Litoralul Românesc</h3>
+      <p class="card-desc">Mamaia, Eforie, Costinești — plajele Mării Negre cu apă caldă, stațiuni animate și antichitățile din Constanța.</p>
+      <div class="card-footer">
+        <div class="card-meta">
+          <span>⭐ 4.5</span>
+          <span>🕐 2-7 zile</span>
+        </div>
+        <button class="card-link" onclick="showDetail('litoral')">Detalii →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TULCEA -->
+  <div class="card" data-id="tulcea" data-cat="delta" data-name="tulcea delta dunarii pescuit natura pasari">
+    <div class="card-img il-tulcea">
+      <span class="card-badge">Delta</span>
+      <span class="card-fav">♡</span>
+      <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,110 Q100,80 200,100 T300,90 L300,200 L0,200Z" fill="rgba(255,255,255,0.12)"/>
+        <path d="M0,130 Q100,105 200,120 T300,110 L300,200 L0,200Z" fill="rgba(255,255,255,0.1)"/>
+        <path d="M100,80 Q108,65 116,80" stroke="rgba(255,255,255,0.5)" stroke-width="2" fill="none"/>
+        <path d="M140,72 Q148,57 156,72" stroke="rgba(255,255,255,0.45)" stroke-width="2" fill="none"/>
+        <path d="M230,88 Q236,75 242,88" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" fill="none"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <p class="card-region">📍 Tulcea</p>
+      <h3 class="card-title">Rezervația Biosferei</h3>
+      <p class="card-desc">Paradisul naturaliștilor — canale sinuoase, pelicani, stuf și apusuri de soare de neuitat pe brațele Dunării.</p>
+      <div class="card-footer">
+        <div class="card-meta">
+          <span>⭐ 4.8</span>
+          <span>🕐 3-5 zile</span>
+        </div>
+        <button class="card-link" onclick="showDetail('tulcea')">Detalii →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLUJ -->
+  <div class="card" data-id="cluj" data-cat="oras" data-name="cluj napoca oras tineret cultura ardeal">
+    <div class="card-img il-cluj">
+      <span class="card-badge">Orașe</span>
+      <span class="card-fav">♡</span>
+      <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+        <rect x="95" y="80" width="110" height="120" fill="rgba(255,255,255,0.08)" rx="2"/>
+        <polygon points="150,45 95,80 205,80" fill="rgba(255,255,255,0.17)"/>
+        <rect x="140" y="60" width="20" height="25" fill="rgba(255,255,255,0.12)"/>
+        <rect x="108" y="100" width="24" height="28" fill="rgba(255,255,255,0.14)" rx="2"/>
+        <rect x="168" y="100" width="24" height="28" fill="rgba(255,255,255,0.14)" rx="2"/>
+        <rect x="138" y="145" width="24" height="55" fill="rgba(255,255,255,0.08)"/>
+        <rect x="40" y="120" width="50" height="80" fill="rgba(255,255,255,0.06)" rx="2"/>
+        <rect x="210" y="115" width="50" height="85" fill="rgba(255,255,255,0.06)" rx="2"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <p class="card-region">📍 Cluj-Napoca</p>
+      <h3 class="card-title">Cluj-Napoca</h3>
+      <p class="card-desc">Capitala neoficială a Transilvaniei, centru universitar vibrant cu scene culturale, muzee și festivaluri de renume mondial.</p>
+      <div class="card-footer">
+        <div class="card-meta">
+          <span>⭐ 4.7</span>
+          <span>🕐 2-3 zile</span>
+        </div>
+        <button class="card-link" onclick="showDetail('cluj')">Detalii →</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end grid -->
+</div><!-- end #locuri -->
+
+<footer>
+  <div style="margin-bottom:0.6rem;">
+    <span style="display:inline-block;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.9);font-size:0.75rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;padding:4px 14px;border-radius:999px;border:1px solid rgba(255,255,255,0.2);margin-bottom:0.8rem;">Proiect Educațional</span>
+  </div>
+  <strong>Descoperă România</strong> — Realizat de <strong>Sava Dragoș</strong><br>
+  Prof. coordonator: <strong>Peter Sorina Crina</strong><br>
+  <span style="font-size:0.8rem;margin-top:0.4rem;display:inline-block;">Colegiul Național „Andrei Mureșanu" · Bistrița</span>
+</footer>
+
+</div><!-- end page-home -->
+
+<!-- ==================== DETAIL PAGE ==================== -->
+<div id="page-detail" class="page">
+  <button class="back-btn" onclick="goBack()">← Înapoi la obiective</button>
+  <div id="detail-content"></div>
+  <footer style="margin-top:0;">
+    <div style="margin-bottom:0.6rem;"><span style="display:inline-block;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.9);font-size:0.75rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;padding:4px 14px;border-radius:999px;border:1px solid rgba(255,255,255,0.2);margin-bottom:0.8rem;">Proiect Educațional</span></div>
+    <strong>Descoperă România</strong> — Realizat de <strong>Sava Dragoș</strong><br>
+    Prof. coordonator: <strong>Peter Sorina Crina</strong><br>
+    <span style="font-size:0.8rem;margin-top:0.4rem;display:inline-block;">Colegiul Național „Andrei Mureșanu" · Bistrița</span>
+  </footer>
+</div>
+
+<!-- ==================== MAP PAGE ==================== -->
+<div id="page-map" class="page">
+  <div class="map-header">
+    <div>
+      <h2>Harta interactivă</h2>
+      <p>Apasă pe oricare punct pentru a vedea detalii. Dă click pe „Deschide pagina" pentru prezentarea completă.</p>
+    </div>
+    <button class="back-btn" style="margin:0;" onclick="showPage('home')">← Înapoi</button>
+  </div>
+  <div class="map-container">
+    <div class="map-svg-wrap">
+      <!-- Romania SVG Map with pins -->
+      <svg viewBox="0 0 700 500" xmlns="http://www.w3.org/2000/svg" id="romania-map">
+        <!-- Background -->
+        <rect width="700" height="500" fill="#EAF2F8"/>
+
+        <!-- Romania outline generated from Natural Earth country boundary data -->
+        <path d="
+          M 221.6,149.9 L 234.4,142.5 L 250.2,148.7 L 265.9,147.9 L 288.1,152.4
+          L 303.4,150.1 L 320.8,161.6 L 329.8,160.0 L 338.8,152.3 L 383.6,147.6
+          L 390.0,136.9 L 408.9,133.8 L 424.1,139.1 L 432.6,148.1 L 438.1,162.4
+          L 452.6,173.8 L 452.4,178.0 L 463.9,189.4 L 474.8,194.9 L 484.9,213.1
+          L 485.5,224.6 L 478.8,234.1 L 477.5,244.9 L 481.7,263.7 L 476.5,265.6
+          L 489.7,278.9 L 501.8,282.6 L 511.7,283.5 L 512.3,279.0 L 519.2,281.1
+          L 538.4,273.0 L 550.6,275.4 L 555.4,279.5 L 553.3,284.5 L 557.0,286.9
+          L 550.2,303.7 L 532.0,305.0 L 522.6,310.1 L 521.4,307.4 L 529.4,304.5
+          L 524.8,301.4 L 528.0,296.3 L 521.8,294.2 L 516.2,297.6 L 520.0,306.4
+          L 512.7,308.6 L 512.0,312.1 L 517.6,308.8 L 522.0,310.8 L 510.7,313.2
+          L 510.7,321.1 L 518.9,313.5 L 504.7,328.4 L 506.5,344.1 L 501.9,356.7
+          L 484.3,355.7 L 472.5,351.4 L 469.1,344.3 L 459.7,346.5 L 455.4,342.5
+          L 443.1,343.3 L 436.6,338.0 L 425.6,335.3 L 382.5,343.4 L 364.3,357.2
+          L 345.7,361.2 L 324.1,356.3 L 299.7,353.7 L 284.6,356.1 L 251.4,349.9
+          L 223.6,352.1 L 220.2,350.2 L 221.4,345.4 L 228.7,342.4 L 229.1,339.4
+          L 212.4,332.7 L 211.9,329.0 L 205.4,326.8 L 201.9,321.2 L 206.9,316.2
+          L 214.9,316.9 L 213.5,313.4 L 199.4,307.9 L 184.6,319.3 L 178.1,311.6
+          L 161.5,310.2 L 157.7,305.8 L 148.7,305.1 L 146.7,301.9 L 155.6,300.3
+          L 146.5,294.9 L 153.5,287.7 L 128.3,278.5 L 117.8,271.3 L 118.7,257.8
+          L 113.9,258.3 L 92.0,240.3 L 103.1,237.1 L 112.7,238.9 L 119.3,232.5
+          L 130.9,234.3 L 136.3,231.7 L 138.0,226.7 L 143.0,225.2 L 144.0,216.0
+          L 153.9,211.1 L 154.0,206.1 L 162.2,196.8 L 160.3,195.4 L 178.5,177.1
+          L 178.8,171.0 L 191.8,160.9 L 209.8,158.5 L 220.7,150.6 Z
+        " fill="#C8DEB7" stroke="#6F8F56" stroke-width="2.6" stroke-linejoin="round"/>
+
+        <!-- Carpathian mountains suggestion -->
+        <path d="M 210,172 C 250,130 305,141 338,176 C 370,210 423,197 462,226" fill="none" stroke="#7B9A63" stroke-width="3" stroke-dasharray="6,4" opacity="0.55"/>
+
+        <!-- Danube river suggestion -->
+        <path d="M 126,304 C 164,342 219,365 275,358 C 330,385 393,385 435,364 C 475,346 507,371 527,402" fill="none" stroke="#5DADE2" stroke-width="2.8" opacity="0.68"/>
+
+        <!-- Black Sea -->
+        <ellipse cx="590" cy="300" rx="80" ry="110" fill="#AED6F1" opacity="0.7"/>
+        <text x="590" y="295" text-anchor="middle" font-size="11" fill="#2471A3" font-family="'DM Sans',sans-serif" font-weight="500">Marea</text>
+        <text x="590" y="310" text-anchor="middle" font-size="11" fill="#2471A3" font-family="'DM Sans',sans-serif" font-weight="500">Neagră</text>
+
+        <!-- Labels -->
+        <text x="300" y="190" text-anchor="middle" font-size="9" fill="#6B7A5E" font-family="'DM Sans',sans-serif" opacity="0.7">Carpați</text>
+        <text x="210" y="330" text-anchor="middle" font-size="9" fill="#2471A3" font-family="'DM Sans',sans-serif" opacity="0.8">Dunărea</text>
+
+        <!-- PINS: id, cx, cy, color, catClass -->
+
+        <!-- Castelul Peles: Sinaia, Prahova (center-south) -->
+        <g class="map-pin" onclick="mapSelectPin('peles')" id="pin-peles">
+          <circle cx="352" cy="277" r="14" fill="#27ae60" opacity="0.15"/>
+          <circle cx="352" cy="277" r="9" fill="#27ae60"/>
+          <text x="352" y="281" text-anchor="middle" font-size="10" fill="white">🏰</text>
+          <text x="352" y="295" text-anchor="middle" font-size="8.5" fill="#1C1C1C" font-family="'DM Sans',sans-serif" font-weight="600">Peleș</text>
+        </g>
+
+        <!-- Castelul Bran: Bran, Brasov -->
+        <g class="map-pin" onclick="mapSelectPin('bran')" id="pin-bran">
+          <circle cx="344" cy="269" r="14" fill="#27ae60" opacity="0.15"/>
+          <circle cx="344" cy="269" r="9" fill="#27ae60"/>
+          <text x="344" y="273" text-anchor="middle" font-size="10" fill="white">🏰</text>
+          <text x="344" y="287" text-anchor="middle" font-size="8.5" fill="#1C1C1C" font-family="'DM Sans',sans-serif" font-weight="600">Bran</text>
+        </g>
+
+        <!-- Delta Dunarii: Tulcea (east) -->
+        <g class="map-pin" onclick="mapSelectPin('delta')" id="pin-delta">
+          <circle cx="523" cy="287" r="14" fill="#3498db" opacity="0.15"/>
+          <circle cx="523" cy="287" r="9" fill="#3498db"/>
+          <text x="523" y="291" text-anchor="middle" font-size="10" fill="white">🦅</text>
+          <text x="523" y="305" text-anchor="middle" font-size="8.5" fill="#1C1C1C" font-family="'DM Sans',sans-serif" font-weight="600">Delta</text>
+        </g>
+
+        <!-- Manastiri Bucovina: Suceava (north-east) -->
+        <g class="map-pin" onclick="mapSelectPin('manastiri')" id="pin-manastiri">
+          <circle cx="368" cy="171" r="14" fill="#8e44ad" opacity="0.15"/>
+          <circle cx="368" cy="171" r="9" fill="#8e44ad"/>
+          <text x="368" y="175" text-anchor="middle" font-size="10" fill="white">⛪</text>
+          <text x="368" y="189" text-anchor="middle" font-size="8.5" fill="#1C1C1C" font-family="'DM Sans',sans-serif" font-weight="600">Bucovina</text>
+        </g>
+
+        <!-- Transfagarasan: Fagaras Mountains -->
+        <g class="map-pin" onclick="mapSelectPin('transfag')" id="pin-transfag">
+          <circle cx="307" cy="265" r="14" fill="#27ae60" opacity="0.15"/>
+          <circle cx="307" cy="265" r="9" fill="#1abc9c"/>
+          <text x="307" y="269" text-anchor="middle" font-size="10" fill="white">🌿</text>
+          <text x="307" y="283" text-anchor="middle" font-size="8.5" fill="#1C1C1C" font-family="'DM Sans',sans-serif" font-weight="600">Transfăg.</text>
+        </g>
+
+        <!-- Sighisoara: Mures -->
+        <g class="map-pin" onclick="mapSelectPin('sighisoara')" id="pin-sighisoara">
+          <circle cx="316" cy="235" r="14" fill="#e74c3c" opacity="0.15"/>
+          <circle cx="316" cy="235" r="9" fill="#d35400"/>
+          <text x="316" y="239" text-anchor="middle" font-size="10" fill="white">🏙</text>
+          <text x="316" y="253" text-anchor="middle" font-size="8.5" fill="#1C1C1C" font-family="'DM Sans',sans-serif" font-weight="600">Sighișoara</text>
+        </g>
+
+        <!-- Sibiu -->
+        <g class="map-pin" onclick="mapSelectPin('sibiu')" id="pin-sibiu">
+          <circle cx="284" cy="256" r="14" fill="#e74c3c" opacity="0.15"/>
+          <circle cx="284" cy="256" r="9" fill="#c0392b"/>
+          <text x="284" y="260" text-anchor="middle" font-size="10" fill="white">🏙</text>
+          <text x="284" y="274" text-anchor="middle" font-size="8.5" fill="#1C1C1C" font-family="'DM Sans',sans-serif" font-weight="600">Sibiu</text>
+        </g>
+
+        <!-- Maramures: north-west -->
+        <g class="map-pin" onclick="mapSelectPin('maramures')" id="pin-maramures">
+          <circle cx="262" cy="158" r="14" fill="#8e44ad" opacity="0.15"/>
+          <circle cx="262" cy="158" r="9" fill="#8e44ad"/>
+          <text x="262" y="162" text-anchor="middle" font-size="10" fill="white">🌿</text>
+          <text x="262" y="176" text-anchor="middle" font-size="8.5" fill="#1C1C1C" font-family="'DM Sans',sans-serif" font-weight="600">Maramureș</text>
+        </g>
+
+        <!-- Retezat: south-west -->
+        <g class="map-pin" onclick="mapSelectPin('retezat')" id="pin-retezat">
+          <circle cx="222" cy="277" r="14" fill="#1abc9c" opacity="0.15"/>
+          <circle cx="222" cy="277" r="9" fill="#1abc9c"/>
+          <text x="222" y="281" text-anchor="middle" font-size="10" fill="white">🌿</text>
+          <text x="222" y="295" text-anchor="middle" font-size="8.5" fill="#1C1C1C" font-family="'DM Sans',sans-serif" font-weight="600">Retezat</text>
+        </g>
+
+        <!-- Litoral: Constanta, Black Sea coast -->
+        <g class="map-pin" onclick="mapSelectPin('litoral')" id="pin-litoral">
+          <circle cx="504" cy="335" r="14" fill="#f39c12" opacity="0.15"/>
+          <circle cx="504" cy="335" r="9" fill="#f39c12"/>
+          <text x="504" y="339" text-anchor="middle" font-size="10" fill="white">🌊</text>
+          <text x="504" y="353" text-anchor="middle" font-size="8.5" fill="#1C1C1C" font-family="'DM Sans',sans-serif" font-weight="600">Litoral</text>
+        </g>
+
+        <!-- Tulcea / Rezervatia -->
+        <g class="map-pin" onclick="mapSelectPin('tulcea')" id="pin-tulcea">
+          <circle cx="513" cy="286" r="14" fill="#3498db" opacity="0.15"/>
+          <circle cx="513" cy="286" r="9" fill="#2980b9"/>
+          <text x="513" y="290" text-anchor="middle" font-size="10" fill="white">🦅</text>
+          <text x="513" y="304" text-anchor="middle" font-size="8.5" fill="#1C1C1C" font-family="'DM Sans',sans-serif" font-weight="600">Tulcea</text>
+        </g>
+
+        <!-- Cluj: north-west center -->
+        <g class="map-pin" onclick="mapSelectPin('cluj')" id="pin-cluj">
+          <circle cx="257" cy="208" r="14" fill="#e74c3c" opacity="0.15"/>
+          <circle cx="257" cy="208" r="9" fill="#e74c3c"/>
+          <text x="257" y="212" text-anchor="middle" font-size="10" fill="white">🏙</text>
+          <text x="257" y="226" text-anchor="middle" font-size="8.5" fill="#1C1C1C" font-family="'DM Sans',sans-serif" font-weight="600">Cluj</text>
+        </g>
+
+      </svg>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="map-sidebar">
+      <div class="map-legend">
+        <h3>Legendă</h3>
+        <div class="legend-item"><div class="legend-dot castele"></div><span class="legend-label">Castele</span></div>
+        <div class="legend-item"><div class="legend-dot natura"></div><span class="legend-label">Natură & Trasee</span></div>
+        <div class="legend-item"><div class="legend-dot oras"></div><span class="legend-label">Orașe</span></div>
+        <div class="legend-item"><div class="legend-dot manastire"></div><span class="legend-label">Mănăstiri</span></div>
+        <div class="legend-item"><div class="legend-dot litoral"></div><span class="legend-label">Litoral</span></div>
+        <div class="legend-item"><div class="legend-dot delta"></div><span class="legend-label">Delta Dunării</span></div>
+      </div>
+
+      <div class="map-info-card empty" id="map-info-card">
+        <p class="mic-placeholder">👆 Apasă pe un obiectiv de pe hartă pentru a vedea detalii</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div style="margin-bottom:0.6rem;"><span style="display:inline-block;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.9);font-size:0.75rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;padding:4px 14px;border-radius:999px;border:1px solid rgba(255,255,255,0.2);margin-bottom:0.8rem;">Proiect Educațional</span></div>
+    <strong>Descoperă România</strong> — Realizat de <strong>Sava Dragoș</strong><br>
+    Prof. coordonator: <strong>Peter Sorina Crina</strong><br>
+    <span style="font-size:0.8rem;margin-top:0.4rem;display:inline-block;">Colegiul Național „Andrei Mureșanu" · Bistrița</span>
+  </footer>
+</div>
+
+<script>
+// ===================== DATA =====================
+const DETAILS = {
+  peles: {
+    title: 'Castelul Peleș',
+    badge: 'Castele',
+    region: '📍 Sinaia, Prahova',
+    colorClass: 'il-peles',
+    rating: '4.9',
+    duration: '2-3 ore',
+    period: 'sec. XIX',
+    type: 'Castel regal',
+    desc1: 'Castelul Peleș este una dintre cele mai frumoase reședințe regale din Europa, construită între 1873 și 1914 în stil neo-renascentist german. Ridicat la ordinul regelui Carol I al României, castelul cuprinde 160 de camere, fiecare decorată în stiluri diferite — Maur, Turcesc, Florentin, Baroc și Rococo.',
+    desc2: 'Amplasat în inima Carpaților, la Sinaia, castelul este înconjurat de păduri de brazi și oferă una dintre cele mai spectaculoase priveliști din România. Colecțiile sale de artă, arme, tapiserii și mobilier european de epocă îl transformă într-un muzeu excepțional.',
+    highlights: [
+      { icon: '🎨', title: '160 de camere', text: 'Fiecare cameră decorată în stil unic: Maur, Florentin, Turcesc' },
+      { icon: '🌲', title: 'Natură alpină', text: 'Înconjurat de păduri de brazi la 800m altitudine' },
+      { icon: '🏛️', title: 'Colecții regale', text: 'Armuri, tapiserii, picturi și mobilier din toată Europa' },
+      { icon: '📸', title: 'Fotografie', text: 'Unul dintre cele mai fotografiate castele din România' }
+    ],
+    tips: { sezon: 'Tot anul', acces: 'Sinaia, DN1', pret: '15-45 lei', program: '9:00-17:00' }
+  },
+  bran: {
+    title: 'Castelul Bran',
+    badge: 'Castele',
+    region: '📍 Bran, Brașov',
+    colorClass: 'il-bran',
+    rating: '4.7',
+    duration: '1-2 ore',
+    period: 'sec. XIV',
+    type: 'Castel medieval',
+    desc1: 'Castelul Bran, cunoscut în toată lumea drept "Castelul lui Dracula", este cel mai vizitat monument din România. Construit în 1388, cetatea a servit ca punct de vamă și fortăreață militară, dominând trecătoarea dintre Transilvania și Muntenia.',
+    desc2: 'Deși legătura directă cu Vlad Țepeș este una istorică discutabilă, atmosfera medievală, turnurile și coridoarele labirintice ale castelului au inspirat universul gotic al lui Bram Stoker. Interioarele cuprind colecții de mobilier, ceramică și obiecte medievale.',
+    highlights: [
+      { icon: '🧛', title: 'Legenda Dracula', text: 'Atracție mondială inspirată de romanul lui Bram Stoker' },
+      { icon: '🏰', title: 'Arhitectură medievală', text: 'Turnuri, coridoare înguste și curte interioară pittoresc' },
+      { icon: '🗡️', title: 'Colecție de arme', text: 'Arme, armuri și obiecte medievale autenike' },
+      { icon: '🌄', title: 'Priveliște panoramică', text: 'Vedere spectaculoasă spre munții Bucegi și Piatra Craiului' }
+    ],
+    tips: { sezon: 'Tot anul', acces: 'Bran, jud. Brașov', pret: '25-45 lei', program: '9:00-18:00' }
+  },
+  delta: {
+    title: 'Delta Dunării',
+    badge: 'Delta',
+    region: '📍 Tulcea',
+    colorClass: 'il-danube',
+    rating: '4.9',
+    duration: '2-5 zile',
+    period: 'UNESCO 1991',
+    type: 'Rezervație naturală',
+    desc1: 'Delta Dunării este a doua deltă ca suprafață din Europa și una dintre cele mai mari zone umede ale lumii, cu o suprafață de peste 5.800 km². Desemnată Rezervație a Biosferei de UNESCO în 1991, delta găzduiește peste 300 de specii de păsări și 45 de specii de pești.',
+    desc2: 'Explorarea deltei se face cu barca, traversând canale înguste, lacuri și bălți acoperite de stuf. Pelicanii, egretele și lebedele sunt personajele principale ale acestui tărâm unic. Comunitățile de lipoveni și pescari păstrează tradiții vechi de secole.',
+    highlights: [
+      { icon: '🦢', title: '300+ specii de păsări', text: 'Pelicani, flamingo, egrete, cormorani și lebede' },
+      { icon: '🚣', title: 'Excursii cu barca', text: 'Canale înguste și lacuri sălbatice de explorat' },
+      { icon: '🐟', title: '45 specii de pești', text: 'Sturion, crap, somn și mreana în apele deltei' },
+      { icon: '🌅', title: 'Apusuri de soare', text: 'Apusuri spectaculoase reflectate în apele Dunării' }
+    ],
+    tips: { sezon: 'Mai–Octombrie', acces: 'Tulcea, cu barca', pret: '50-200 lei/zi', program: 'Non-stop' }
+  },
+  manastiri: {
+    title: 'Mănăstirile Pictate',
+    badge: 'Mănăstiri',
+    region: '📍 Bucovina, Suceava',
+    colorClass: 'il-painted',
+    rating: '4.8',
+    duration: '1-2 zile',
+    period: 'sec. XV-XVI',
+    type: 'Patrimoniu UNESCO',
+    desc1: 'Mănăstirile pictate din Bucovina reprezintă capodopere ale artei medievale românești, unice în lume prin frescele exterioare care acoperă complet zidurile. Construite în perioada de glorie a lui Ștefan cel Mare, ele combină arta bizantină cu elemente locale.',
+    desc2: 'Voroneț — supranumit "Capela Sixtină a Estului" — impresionează prin celebrul albastru Voroneț, un pigment cu secret bine păstrat. Sucevița, Moldovița, Humor și Arbore completează un itinerar cultural și spiritual de neuitat în nordul Moldovei.',
+    highlights: [
+      { icon: '🎨', title: 'Albastrul Voroneț', text: 'Pigment unic, nemaiîntâlnit în altă parte din lume' },
+      { icon: '✝️', title: 'Fresce exterioare', text: 'Picturi biblice care acoperă complet pereții exteriori' },
+      { icon: '🏛️', title: 'Patrimoniu UNESCO', text: 'Înscrise din 1993 în lista patrimoniului mondial' },
+      { icon: '🗺️', title: 'Circuit Bucovina', text: '5 mănăstiri vizitabile într-un singur circuit' }
+    ],
+    tips: { sezon: 'Aprilie–Octombrie', acces: 'Suceava, auto', pret: '5-10 lei', program: '8:00-20:00' }
+  },
+  transfag: {
+    title: 'Transfăgărășanul',
+    badge: 'Natură',
+    region: '📍 Munții Făgăraș',
+    colorClass: 'il-transfag',
+    rating: '4.9',
+    duration: '4-6 ore',
+    period: 'deschis 2004',
+    type: 'Drum alpin',
+    desc1: 'Transfăgărășanul (DN7C) este considerat cel mai spectaculos drum din România și unul dintre cele mai frumoase din lume. Construit în 1974, drumul traversează Munții Făgăraș la o altitudine maximă de 2.042 m, oferind peisaje de o frumusețe copleșitoare.',
+    desc2: 'Drumul este deschis doar câteva luni pe an, din cauza zăpezilor abundente. Pe lângă panoramele montane, vizitatorii pot admira Lacul Bâlea, Cascada Bâlea și Castelul Poenari — legenda lui Vlad Țepeș. Top Gear l-a desemnat cel mai bun drum de condus din lume.',
+    highlights: [
+      { icon: '🏔️', title: '2.042 m altitudine', text: 'Pasul Bâlea — cel mai înalt punct al drumului' },
+      { icon: '🏎️', title: 'Cel mai bun drum', text: 'Desemnat de Top Gear drept cel mai bun drum din lume' },
+      { icon: '🏞️', title: 'Lacul Bâlea', text: 'Lac glaciar la altitudine cu priveliști panoramice' },
+      { icon: '❄️', title: 'Sezonier', text: 'Deschis doar iulie–octombrie din cauza zăpezii' }
+    ],
+    tips: { sezon: 'Iulie–Octombrie', acces: 'DN7C', pret: 'Gratuit', program: 'Ziua (nu noaptea)' }
+  },
+  sighisoara: {
+    title: 'Cetatea Sighișoara',
+    badge: 'Orașe',
+    region: '📍 Sighișoara, Mureș',
+    colorClass: 'il-sighisoara',
+    rating: '4.8',
+    duration: '3-4 ore',
+    period: 'sec. XII',
+    type: 'Cetate medievală UNESCO',
+    desc1: 'Sighișoara este singura cetate medievală locuită în mod continuu din Europa și unul dintre cele mai bine conservate orașe medievale din lume. Fondată de coloniști sași în secolul XII, cetatea a fost înscrisă în Patrimoniul Mondial UNESCO în 1999.',
+    desc2: 'Pe străduțele pavate cu piatră cubică, vizitatorii descoperă case colorte, Turnul cu Ceas — simbol al orașului —, casa în care s-a născut Vlad Țepeș și Biserica din Deal, accesibilă printr-o galerie acoperită de lemn cu 175 de trepte.',
+    highlights: [
+      { icon: '🗼', title: 'Turnul cu Ceas', text: 'Simbol al orașului, înalt de 64 m, construit în sec. XIV' },
+      { icon: '🧛', title: 'Casa lui Vlad Țepeș', text: 'Locul de naștere al celebrului domn — azi restaurant' },
+      { icon: '⛪', title: 'Biserica din Deal', text: 'Acces prin galerie de lemn cu 175 de trepte istorice' },
+      { icon: '🎭', title: 'Festival Medieval', text: 'Festivalul Medieval Sighișoara — iulie, cel mai mare din România' }
+    ],
+    tips: { sezon: 'Tot anul', acces: 'Sighișoara, centru', pret: '10 lei/Turnul', program: '9:00-18:30' }
+  },
+  sibiu: {
+    title: 'Sibiu',
+    badge: 'Orașe',
+    region: '📍 Sibiu',
+    colorClass: 'il-sibiu',
+    rating: '4.8',
+    duration: '1-2 zile',
+    period: 'fondat sec. XII',
+    type: 'Capitală culturală',
+    desc1: 'Sibiul (Hermannstadt) este unul dintre cele mai bine conservate orașe medievale din Europa, desemnat Capitală Culturală Europeană în 2007. Centrul historic cu Piața Mare, Piața Mică și podurile suspendate te poartă înapoi în timp.',
+    desc2: 'Arhitectura saxonă cu "ochii caselor" — ferestrele de mansardă care par să privească în jur — este emblema orașului. Sibiul găzduiește unele dintre cele mai importante festivaluri din România: Jazz in the Street, FITS (Festivalul Internațional de Teatru) și Târgul de Crăciun, unul dintre cele mai frumoase din Europa.',
+    highlights: [
+      { icon: '👁️', title: '"Ochii" Sibiului', text: 'Ferestrele de mansardă saxone, unice în toată România' },
+      { icon: '🌉', title: 'Podul Minciunilor', text: 'Legendarul pod de fontă — primul din România (1859)' },
+      { icon: '🎭', title: 'FITS', text: 'Festivalul Internațional de Teatru, recunoscut mondial' },
+      { icon: '🎄', title: 'Târg de Crăciun', text: 'Unul dintre cele mai frumoase târguri de Crăciun din Europa' }
+    ],
+    tips: { sezon: 'Tot anul', acces: 'A1, centru pietonal', pret: 'Gratuit (centru)', program: 'Permanent' }
+  },
+  maramures: {
+    title: 'Maramureș',
+    badge: 'Natură & Tradiții',
+    region: '📍 Maramureș',
+    colorClass: 'il-maramures',
+    rating: '4.7',
+    duration: '2-3 zile',
+    period: 'UNESCO 1999',
+    type: 'Sat tradițional',
+    desc1: 'Maramureșul este considerată "inima satului românesc", o regiune unde tradițiile milenare s-au păstrat aproape neatinse. Bisericile de lemn înalte, costumele tradiționale și obiceiurile vechi de sute de ani fac din această zonă un muzeu viu.',
+    desc2: 'Cimitirul Vesel de la Săpânța, cu cruci colorate și epitafuri pline de umor, este una dintre cele mai originale atracții din Europa. Mocănița — trenulețul cu abur — traversează Valea Vaserului printr-un peisaj de basm. Opt biserici de lemn din zonă sunt incluse în patrimoniul UNESCO.',
+    highlights: [
+      { icon: '⛪', title: 'Biserici de lemn UNESCO', text: '8 biserici de lemn înscrise în patrimoniul mondial' },
+      { icon: '🎨', title: 'Cimitirul Vesel', text: 'Cruci colorate cu epitafuri umoristice — unicat mondial' },
+      { icon: '🚂', title: 'Mocănița', text: 'Tren cu abur pe Valea Vaserului — experiență de vis' },
+      { icon: '👘', title: 'Port tradițional', text: 'Costume populare purtate zilnic de localnici' }
+    ],
+    tips: { sezon: 'Tot anul', acces: 'Baia Mare, Sighetu', pret: '20-50 lei/tren', program: 'Variabil' }
+  },
+  retezat: {
+    title: 'Parcul Național Retezat',
+    badge: 'Natură',
+    region: '📍 Hunedoara',
+    colorClass: 'il-retezat',
+    rating: '4.9',
+    duration: '2-5 zile',
+    period: 'parc din 1935',
+    type: 'Parc Național',
+    desc1: 'Parcul Național Retezat este cel mai vechi parc național din România, înființat în 1935. Munții Retezat ascund o biodiversitate excepțională — 80 de lacuri glaciare, vârfuri ce depășesc 2.500 m și o faună spectaculoasă care include vulturii pleșuvi, capra neagră și ursul brun.',
+    desc2: 'Lacul Bucura este cel mai mare lac glaciar din România, iar Vârful Peleaga (2.509 m) oferă panorame de 360° de neuitat. Traseele de drumeție sunt printre cele mai apreciate din Carpați, trecând prin văi sălbatice, circuri glaciare și creste alpine.',
+    highlights: [
+      { icon: '🏔️', title: '80 de lacuri glaciare', text: 'Cea mai mare concentrație de lacuri glaciare din România' },
+      { icon: '🦅', title: 'Vulturii pleșuvi', text: 'Una dintre ultimele populații de vulturi din România' },
+      { icon: '🐐', title: 'Capra neagră', text: 'Simbolul munților, prezentă în număr semnificativ' },
+      { icon: '⛺', title: 'Trekking', text: 'Trasee marcate de la 1 zi la circuite de 5+ zile' }
+    ],
+    tips: { sezon: 'Iunie–Octombrie', acces: 'Petroșani / Hațeg', pret: '10 lei/intrare', program: 'Non-stop' }
+  },
+  litoral: {
+    title: 'Litoralul Românesc',
+    badge: 'Litoral',
+    region: '📍 Constanța, Marea Neagră',
+    colorClass: 'il-costinesti',
+    rating: '4.5',
+    duration: '2-7 zile',
+    period: 'resort modern',
+    type: 'Stațiuni balneare',
+    desc1: 'Litoralul românesc se întinde pe circa 245 km de-a lungul Mării Negre, de la Năvodari la Vama Veche. Mamaia — perla litoralului — este cel mai mare resort din România, cu plaje fine, hoteluri moderne și o viață de noapte vibrantă.',
+    desc2: 'Eforie Nord și Eforie Sud sunt renumite pentru nămolul terapeutic al lacului Techirghiol. Costinești rămâne locul preferat al tinerilor, iar Vama Veche păstrează spiritul boem și festiv. Constanța, cel mai mare port la Marea Neagră, adaugă istoria romană cu ruinele romane și cazinoul emblematic.',
+    highlights: [
+      { icon: '🏖️', title: 'Mamaia', text: 'Cel mai animat resort, cu plaje fine și viață de noapte' },
+      { icon: '💆', title: 'Nămol Techirghiol', text: 'Eforie — renumit pentru tratamentele cu nămol negru' },
+      { icon: '🏛️', title: 'Constanța antică', text: 'Moscheea, cazinoul și mozaicurile romane' },
+      { icon: '🎸', title: 'Vama Veche', text: 'Stațiunea boemă cu festivaluri și atmosferă liberă' }
+    ],
+    tips: { sezon: 'Iunie–Septembrie', acces: 'A2 Constanța', pret: '50-300 lei/noapte', program: '24/7 vara' }
+  },
+  tulcea: {
+    title: 'Rezervația Biosferei Dunării',
+    badge: 'Delta',
+    region: '📍 Tulcea',
+    colorClass: 'il-tulcea',
+    rating: '4.8',
+    duration: '3-5 zile',
+    period: 'UNESCO 1991',
+    type: 'Rezervație biosferă',
+    desc1: 'Orașul Tulcea este poarta de intrare în Delta Dunării, locul de unde pornesc excursiile cu barca spre canalele sălbatice ale deltei. Tulcea are un muzeu al deltei care prezintă ecosistemele unice și istoria comunităților de pescari din zonă.',
+    desc2: 'Din Tulcea pornesc rute spre Sulina — cel mai estic oraș din România —, spre Sfântu Gheorghe cu plajele sălbatice și spre Mila 23, considerat cel mai frumos sat din deltă. Apusurile de soare pe Dunăre sunt legendare.',
+    highlights: [
+      { icon: '🚢', title: 'Ferry spre deltă', text: 'Plecări zilnice spre Sulina, Sf. Gheorghe și Crișan' },
+      { icon: '🌅', title: 'Apusuri dunărene', text: 'Apusuri reflectate în apele Dunării — spectacol unic' },
+      { icon: '🎣', title: 'Pescuit sportiv', text: 'Una dintre cele mai bogate zone piscicole din Europa' },
+      { icon: '🏘️', title: 'Sat Mila 23', text: 'Cel mai frumos sat din deltă, accesibil doar cu barca' }
+    ],
+    tips: { sezon: 'Martie–Noiembrie', acces: 'Tulcea, port', pret: '30-150 lei/feribot', program: 'Dimineața devreme' }
+  },
+  cluj: {
+    title: 'Cluj-Napoca',
+    badge: 'Orașe',
+    region: '📍 Cluj-Napoca',
+    colorClass: 'il-cluj',
+    rating: '4.7',
+    duration: '2-3 zile',
+    period: 'fondat sec. XII',
+    type: 'Metropolă culturală',
+    desc1: 'Cluj-Napoca este capitala neoficială a Transilvaniei și cel mai important centru universitar și cultural din vestul României. Cu peste 100.000 de studenți, orașul are o energie tânără, o scenă culturală vibrantă și o gastronomie în plină ascensiune.',
+    desc2: 'Piața Unirii cu statuia lui Matei Corvin, Catedrala Sf. Mihail — una dintre cele mai mari biserici gotice din România — și parcul Central cu barca pe lac sunt atracții clasice. Untold — cel mai mare festival de muzică din România — și TIFF transformă Clujul într-un magnet cultural european.',
+    highlights: [
+      { icon: '🎵', title: 'Untold Festival', text: 'Cel mai mare festival de muzică electronică din România' },
+      { icon: '🎬', title: 'TIFF', text: 'Festivalul Internațional de Film Transilvania — referință europeană' },
+      { icon: '⛪', title: 'Catedrala Sf. Mihail', text: 'Una dintre cele mai impunătoare catedrale gotice din România' },
+      { icon: '☕', title: 'Scenă coffee & gastro', text: 'Clujul are una dintre cele mai dinamice scene gastronomice din țară' }
+    ],
+    tips: { sezon: 'Tot anul', acces: 'A3, Aeroport Cluj', pret: 'Gratuit (centru)', program: 'Permanent' }
+  }
+};
+
+// ===================== NAVIGATION =====================
+let currentPage = 'home';
+let previousPage = 'home';
+
+function showPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + pageId).classList.add('active');
+  window.scrollTo(0, 0);
+  previousPage = currentPage;
+  currentPage = pageId;
+}
+
+function goBack() {
+  showPage(previousPage === 'map' ? 'map' : 'home');
+}
+
+function scrollToLocuri() {
+  showPage('home');
+  setTimeout(() => {
+    document.getElementById('locuri').scrollIntoView({ behavior: 'smooth' });
+  }, 50);
+}
+
+// ===================== DETAIL PAGE =====================
+function showDetail(id) {
+  const d = DETAILS[id];
+  if (!d) return;
+
+  const highlightsHTML = d.highlights.map(h => `
+    <div class="highlight-card">
+      <span class="hl-icon">${h.icon}</span>
+      <span class="hl-title">${h.title}</span>
+      <span class="hl-text">${h.text}</span>
+    </div>
+  `).join('');
+
+  const tipsHTML = Object.entries(d.tips).map(([k, v]) => `
+    <div class="tip-item">
+      <span class="tip-label">${{sezon:'Sezon',acces:'Acces',pret:'Preț bilet',program:'Program'}[k] || k}</span>
+      <span class="tip-value">${v}</span>
+    </div>
+  `).join('');
+
+  document.getElementById('detail-content').innerHTML = `
+    <div class="detail-hero ${d.colorClass}">
+      <div class="detail-hero-overlay"></div>
+      <div class="detail-hero-content">
+        <span class="detail-badge">${d.badge}</span>
+        <h1>${d.title}</h1>
+        <p class="detail-region">${d.region}</p>
+      </div>
+    </div>
+    <div class="detail-body">
+      <div class="detail-meta-row">
+        <div class="detail-meta-item">
+          <span class="detail-meta-label">Rating</span>
+          <span class="detail-meta-value">⭐ ${d.rating}</span>
+        </div>
+        <div class="detail-meta-item">
+          <span class="detail-meta-label">Durată vizită</span>
+          <span class="detail-meta-value">🕐 ${d.duration}</span>
+        </div>
+        <div class="detail-meta-item">
+          <span class="detail-meta-label">Perioadă</span>
+          <span class="detail-meta-value">📅 ${d.period}</span>
+        </div>
+        <div class="detail-meta-item">
+          <span class="detail-meta-label">Tip</span>
+          <span class="detail-meta-value">🏷️ ${d.type}</span>
+        </div>
+      </div>
+      <div class="detail-section">
+        <h2>Despre obiectiv</h2>
+        <p>${d.desc1}</p>
+        <p>${d.desc2}</p>
+      </div>
+      <div class="detail-section">
+        <h2>Ce să nu ratezi</h2>
+        <div class="detail-highlights">${highlightsHTML}</div>
+      </div>
+      <div class="detail-section">
+        <h2>Informații practice</h2>
+        <div class="detail-tips">${tipsHTML}</div>
+      </div>
+    </div>
+  `;
+
+  previousPage = currentPage;
+  showPage('detail');
+}
+
+// ===================== MAP INTERACTION =====================
+function mapSelectPin(id) {
+  const d = DETAILS[id];
+  if (!d) return;
+
+  // Highlight selected pin
+  document.querySelectorAll('.map-pin circle:first-of-type').forEach(c => c.setAttribute('opacity', '0.15'));
+  const pin = document.getElementById('pin-' + id);
+  if (pin) pin.querySelector('circle').setAttribute('opacity', '0.4');
+
+  const card = document.getElementById('map-info-card');
+  card.classList.remove('empty');
+  card.innerHTML = `
+    <span class="mic-badge">${d.badge}</span>
+    <h3>${d.title}</h3>
+    <p class="mic-region">${d.region}</p>
+    <p>${d.desc1.substring(0, 140)}...</p>
+    <div class="mic-meta">
+      <span>⭐ ${d.rating}</span>
+      <span>🕐 ${d.duration}</span>
+    </div>
+    <button class="map-goto" onclick="showDetail('${id}')">Deschide pagina →</button>
+  `;
+}
+
+// ===================== FILTERS =====================
+let activeFilter = 'toate';
+
+function filterBy(cat, btn) {
+  activeFilter = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+}
+
+function filterCards() {
+  applyFilters();
+}
+
+function applyFilters() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const cards = document.querySelectorAll('.card');
+  let visible = 0;
+  cards.forEach(card => {
+    const cat = card.dataset.cat;
+    const name = card.dataset.name;
+    const catOk = activeFilter === 'toate' || cat === activeFilter;
+    const searchOk = !search || name.includes(search);
+    if (catOk && searchOk) {
+      card.classList.remove('hidden');
+      visible++;
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+  document.getElementById('count-label').textContent = visible + ' obiective';
+}
+
+// Favorite toggle
+document.querySelectorAll('.card-fav').forEach(fav => {
+  fav.addEventListener('click', function(e) {
+    e.stopPropagation();
+    this.textContent = this.textContent === '♡' ? '♥' : '♡';
+    this.style.color = this.textContent === '♥' ? '#CC2233' : '';
+  });
+});
+
+// Click on card body navigates to detail
+document.querySelectorAll('.card').forEach(card => {
+  card.addEventListener('click', function(e) {
+    if (e.target.classList.contains('card-fav') || e.target.closest('.card-fav')) return;
+    const id = this.dataset.id;
+    if (id) showDetail(id);
+  });
+});
+
+if (window.location.hash === '#map') showPage('map');
+</script>
+</body>
+</html>
